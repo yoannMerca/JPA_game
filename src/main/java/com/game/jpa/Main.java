@@ -13,14 +13,13 @@ import javax.persistence.TypedQuery;
 import bean.Joueur;
 import bean.Partie;
 import main.java.com.example.jpa.database.DatabaseHandle;
+import repository.JoueurRepository;
 
 public class Main {
 	
 	public static void main(String[] args) {
 
 		EntityManager em = DatabaseHandle.getEntityManagerFactory();
-		
-		
 		EntityTransaction transaction = em.getTransaction();
 		
 		// Begin the transaction
@@ -28,7 +27,7 @@ public class Main {
 		
 		// the record is read and the object is now managed by Hibernate in memory
 		Joueur p = em.find(Joueur.class, 1);
-		System.out.println(p.toString());
+		//System.out.println(p.toString());
 		
 		// the persistent object is modified
 		p.setNom("Peter");
@@ -46,11 +45,14 @@ public class Main {
 		// all the objects will be detached
 		
 		TypedQuery<Joueur> q = em.createQuery("select h from Joueur h ", Joueur.class);
-		System.out.println(q.getResultList().size());
+		//System.out.println(q.getResultList().size());
 		
 		q.getResultList().stream().forEach(System.out::println);
 		
+		TypedQuery<Partie> qParties = em.createQuery("from Partie ", Partie.class);
+	
 		
+		//qParties.getResultList().stream().forEach(System.out::println);
 		Partie p1 = new Partie();
 		p1.setNiveau(2);
 		p1.setScore(1500);
@@ -73,8 +75,11 @@ public class Main {
 			System.out.println("plop ca n'a pas fonctione");
 		}
 		
-		transaction.commit();
 		
+		System.out.println("//////////////////////////////////////");
+		JoueurRepository.getJoueurByName("youcef");
+		transaction.commit();
+		JoueurRepository.getPseudoPlayerSorted();
 		em.close();
 		System.exit(0);
 	}
