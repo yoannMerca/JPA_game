@@ -65,4 +65,9 @@ public abstract class Engin {
 		this.avatar = avatar;
 	}
 
+	@Override
+	public String toString() {
+		return "Engin [id_engin=" + id_engin + ", couleur=" + couleur + ", vitesse_max=" + vitesse_max ;
+	}
+
 }

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,7 +29,7 @@ public class Joueur {
 		)
 	private List<Partie> parties;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="id_avatar")
 	private Avatar avatar;
 	
@@ -80,11 +81,22 @@ public class Joueur {
 		this.parties = parties;
 	}
 
+	
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Avatar avatar) {
+		this.avatar = avatar;
+	}
+
 	@Override
 	public String toString() {
-		return "Joueur [id=" + id + ",, nom=" + nom + ", mail=" + mail + ", pseudo=" + pseudo
-				+ "]";
+		return "Joueur [id=" + id + ", avatar=" + avatar + ", nom=" + nom + ", mail=" + mail
+				+ ", pseudo=" + pseudo + "]";
 	}
+
+	
 
 	
 

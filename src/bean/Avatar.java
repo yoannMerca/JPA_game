@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,8 +21,8 @@ public class Avatar {
 	@OneToMany(mappedBy="avatar")
 	private Set<Engin> engins ;
 	
-	@OneToMany(mappedBy="avatar")
-	private Set<Joueur> joueurs;
+	@OneToOne(mappedBy="avatar")
+	private Joueur joueur;
 	
 	@Column(length = 30)
 	private String nom;
@@ -47,12 +48,12 @@ public class Avatar {
 		this.engins = engins;
 	}
 
-	public Set<Joueur> getJoueur() {
-		return joueurs;
+	public Joueur getJoueur() {
+		return joueur;
 	}
 
-	public void setParties(Set<Joueur> J) {
-		this.joueurs = J;
+	public void setParties(Joueur J) {
+		this.joueur = J;
 	}
 
 	public String getNom() {
@@ -69,6 +70,12 @@ public class Avatar {
 
 	public void setPuissance(int puissance) {
 		this.puissance = puissance;
+	}
+
+	@Override
+	public String toString() {
+		return "Avatar [id=" + id + ", engins=" + engins + ", puissance="
+				+ puissance + "]";
 	}
 	
 	

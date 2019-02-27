@@ -1,11 +1,14 @@
 package repository;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import bean.Avatar;
 import bean.Joueur;
 import main.java.com.example.jpa.database.DatabaseHandle;
 
@@ -23,15 +26,37 @@ public class JoueurRepository {
 		TypedQuery<Joueur> q = em.createQuery("select j from Joueur j where j.nom = :name", Joueur.class);
 		q.setParameter("name", name);
 		Joueur p = q.getSingleResult();
-		p.toString();
+		System.out.println(p.toString()); 
 	}
 	public static void getPseudoPlayerSorted() {
 		TypedQuery<Joueur> q = em.createQuery("from Joueur", Joueur.class);
+		q.getResultList().stream().sorted((e1, e2) -> e1.getPseudo().compareTo(e2.getPseudo())).forEach(e->System.out.println(e.getPseudo()));
+	}
+	public static void getPlayerPlayedToday(LocalDate date) {
+		System.out.print("On a tous jouees en date du "+date);
+		TypedQuery<Joueur> q = em.createQuery("Select j FROM Joueur j Join j.parties p Join p.joueurs Where p.date_=:date ",Joueur.class);
+		q.setParameter("date", LocalDate.of(2018, 05, 11));
 		
-		q.getResultList().stream().map(e -> e.getPseudo()).sorted((o1,o2)->{
-			return  (o1.equals(o2)) ? 1: (o2.equals(o1)? -1 :0) ;
-		}).forEach(System.out::println);
-
+		q.getResultList().stream().forEach(e->System.out.println(e.getPseudo()));
+		System.out.println("--------------------------------------------");
+	}
+	public static void getPlayerEngins(String pseudo) {
+		//TypedQuery<Joueur> q = em.createQuery("Select j FROM Joueur j Where j.pseudo = :pseudo",Joueur.class);
+		TypedQuery<Joueur> q = em.createQuery("Select j FROM Joueur j Join j.avatar a Join a.engins Where j.pseudo = :pseudo",Joueur.class);
+		q.setParameter("pseudo", pseudo);
+		q.setMaxResults(1);
+		System.out.println(q.getResultList());
 		
 	}
+	
+	public static void getLastPartieByUser(String pseudo) {
+		
+		TypedQuery<Joueur> q = em.createQuery("Select j FROM Joueur j Join j.parties p Join p.joueurs Where j.pseudo=:pseudo order by p.date_ ",Joueur.class);
+		q.setParameter("pseudo", pseudo);
+		q.setMaxResults(1);
+		Joueur j = q.getSingleResult();
+		System.out.println(j.getParties());
+		
+	}
+	
 }

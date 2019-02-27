@@ -39,7 +39,7 @@ public class Main {
 		p2.setPseudo("James");
 		
 		// this object become a persistent object
-		em.persist(p2);
+		//em.persist(p2);
 	
 		
 		// all the objects will be detached
@@ -57,13 +57,13 @@ public class Main {
 		p1.setNiveau(2);
 		p1.setScore(1500);
 		p1.setDate_(LocalDate.now());
-		em.persist(p1);
+		//em.persist(p1);
 		
 		Partie p3 = new Partie();
 		p3.setNiveau(5);
 		p3.setScore(13435);
 		p3.setDate_(LocalDate.of(2018,03,02));
-		em.persist(p3);
+		//em.persist(p3);
 		
 		
 		TypedQuery<Partie> q2 = em.createQuery("from Partie", Partie.class);
@@ -78,8 +78,26 @@ public class Main {
 		
 		System.out.println("//////////////////////////////////////");
 		JoueurRepository.getJoueurByName("youcef");
-		transaction.commit();
+		System.out.println("//////////////////////////////////////");
+		
 		JoueurRepository.getPseudoPlayerSorted();
+		
+		JoueurRepository.getPlayerPlayedToday(LocalDate.of(2018, 01, 28));
+		JoueurRepository.getPlayerEngins("youyou");
+		JoueurRepository.getLastPartieByUser("youyou");
+		
+		Joueur j = em.find(Joueur.class, 4);
+		if (j == null){
+		 System.out.println("le joueur avec cet id n'existe pas");
+		}else {
+			j.getAvatar().getEngins().stream().forEach(System.out::println);
+			j.getAvatar().getEngins().stream().forEach(e->e.setCouleur("bluje"));
+		}
+		
+		
+		
+		transaction.commit();
+		
 		em.close();
 		System.exit(0);
 	}
